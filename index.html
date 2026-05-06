@@ -3,261 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Résultat Vérification 2D-Doc</title>
+    <title>Résultat Complet 2D-Doc</title>
     <style>
         :root {
             --primary-blue: #00338d;
-            --success-green: #d4f4e2;
-            --success-text: #0b7a42;
-            --label-color: #556080;
-            --bg-color: #ffffff;
-            --border-color: #f0f2f5;
+            --success-green-bg: #d4f4e2;
+            --success-green-text: #0b7a42;
+            --label-gray: #556080;
+            --border-light: #f0f2f5;
+            --bg-white: #ffffff;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            background-color: var(--bg-color);
+            background-color: var(--bg-white);
             color: #1a1a1a;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Barre d'en-tête fixe */
-        .top-bar {
+        /* En-tête fixe */
+        header {
             position: fixed;
             top: 0;
             width: 100%;
-            height: 50px;
+            height: 60px;
             background: white;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 15px;
+            padding: 0 20px;
             box-sizing: border-box;
-            border-bottom: 1px solid var(--border-color);
-            z-index: 100;
+            border-bottom: 1px solid var(--border-light);
+            z-index: 1000;
         }
 
-        .page-title {
-            font-weight: bold;
-            font-size: 17px;
+        .back-btn { color: var(--primary-blue); font-size: 24px; cursor: pointer; text-decoration: none; }
+        .header-title { font-weight: 700; font-size: 18px; margin: 0 auto; }
+        .share-btn { color: var(--primary-blue); font-size: 22px; }
+
+        /* Conteneur principal */
+        main {
+            padding: 80px 20px 100px 20px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .back-arrow { color: var(--primary-blue); font-size: 20px; cursor: pointer; }
-        .share-icon { color: var(--primary-blue); font-size: 20px; }
-
-        /* Contenu principal */
-        .content {
-            padding: 70px 15px 120px 15px; /* Marges pour éviter le chevauchement avec header/footer */
-        }
-
+        /* Bannière de résultat principal */
         .status-banner {
-            background-color: var(--success-green);
-            color: var(--success-text);
-            padding: 12px 18px;
-            border-radius: 10px;
+            background-color: var(--success-green-bg);
+            color: var(--success-green-text);
+            padding: 15px 20px;
+            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-weight: bold;
-            font-size: 22px;
-            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 24px;
+            margin-bottom: 30px;
         }
 
-        .check-circle {
-            background: var(--success-text);
+        .check-main {
+            background: var(--success-green-text);
             color: white;
-            width: 26px;
-            height: 26px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-        }
-
-        .section h3 {
             font-size: 16px;
-            color: #000;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
         }
 
-        .field {
-            margin-bottom: 18px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #fafafa;
+        /* Titres de sections */
+        h2 {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 25px 0 15px 0;
+            color: #000;
+        }
+
+        /* Lignes d'information */
+        .info-row {
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f9fa;
         }
 
         .label {
-            font-size: 11px;
-            color: var(--label-color);
+            font-size: 12px;
+            color: var(--label-gray);
             text-transform: uppercase;
             font-weight: 700;
             margin-bottom: 4px;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
         }
 
         .value {
-            font-size: 15px;
+            font-size: 16px;
             color: #333;
             line-height: 1.4;
         }
 
-        .success {
-            color: var(--success-text);
+        .value.success {
+            color: var(--success-green-text);
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .mini-check {
-            border: 1px solid var(--success-text);
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid var(--success-green-text);
             border-radius: 50%;
-            width: 14px;
-            height: 14px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             font-size: 10px;
         }
 
-        /* Bouton Flottant (FAB) */
+        /* Bouton flottant (FAB) */
         .fab {
             position: fixed;
-            bottom: 90px;
+            bottom: 100px;
             right: 20px;
-            width: 56px;
-            height: 56px;
+            width: 60px;
+            height: 60px;
             background-color: var(--primary-blue);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 99;
+            box-shadow: 0 4px 15px rgba(0, 51, 141, 0.3);
+            z-index: 999;
         }
 
-        /* Simulation icône QR simple en CSS */
-        .qr-icon {
-            width: 20px;
-            height: 20px;
-            border: 2px solid white;
-            padding: 2px;
+        .qr-icon-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2px;
+            width: 22px;
         }
-        .qr-box { background: white; width: 100%; height: 100%; }
+        .qr-dot { background: white; width: 100%; height: 100%; aspect-ratio: 1; }
 
         /* Pied de page fixe */
-        .footer {
+        footer {
             position: fixed;
             bottom: 0;
+            left: 0;
             width: 100%;
             background: var(--primary-blue);
             padding: 20px;
             box-sizing: border-box;
             text-align: center;
+            z-index: 1000;
         }
 
-        .btn-finish {
+        .footer-btn {
             background: none;
             border: none;
             color: white;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
-            text-transform: capitalize;
         }
+
     </style>
 </head>
 <body>
 
-    <header class="top-bar">
-        <div class="back-arrow">〈</div>
-        <div class="page-title">Résultat</div>
-        <div class="share-icon">⎋</div>
+    <header>
+        <span class="back-btn">〈</span>
+        <h1 class="header-title">Résultat</h1>
+        <span class="share-btn">⎋</span>
     </header>
 
-    <main class="content">
+    <main>
         <div class="status-banner">
             <span>Valide</span>
-            <div class="check-circle">✓</div>
+            <div class="check-main">✓</div>
         </div>
 
-        <section class="section">
-            <h3>Données de validité</h3>
-            <div class="field">
+        <!-- SECTION 1 -->
+        <section>
+            <h2>Données de validité</h2>
+            <div class="info-row">
                 <div class="label">Statut de la signature</div>
                 <div class="value success">Valide <span class="mini-check">✓</span></div>
             </div>
         </section>
 
-        <section class="section">
-            <h3>Données du message</h3>
+        <!-- SECTION 2 -->
+        <section>
+            <h2>Données du message</h2>
             
-            <div class="field">
+            <div class="info-row">
                 <div class="label">Type de document étranger</div>
                 <div class="value">Attestation de dépôt d'une demande de titre de séjour</div>
             </div>
 
-            <div class="field">
+            <div class="info-row">
                 <div class="label">Numéro de la demande de document étranger</div>
                 <div class="value">3301202604100383735</div>
             </div>
 
-            <div class="field">
+            <div class="info-row">
                 <div class="label">Date de dépôt de la demande</div>
                 <div class="value">10/04/2026</div>
             </div>
 
-            <div class="field">
+            <div class="info-row">
                 <div class="label">Autorisation</div>
                 <div class="value">AUTORISE A TRAVAILLER</div>
             </div>
 
-            <div class="field">
+            <div class="info-row">
+                <div class="label">Numéro d'étranger</div>
+                <div class="value">NEANT</div>
+            </div>
+
+            <div class="info-row">
                 <div class="label">Nom patronymique</div>
                 <div class="value">DIAGNE</div>
             </div>
 
-            <div class="field">
+            <div class="info-row">
+                <div class="label">Nom d'usage</div>
+                <div class="value">NEANT</div>
+            </div>
+
+            <div class="info-row">
                 <div class="label">Liste des prénoms</div>
                 <div class="value">BIRAHIM</div>
             </div>
 
-            <div class="field">
+            <div class="info-row">
+                <div class="label">Genre</div>
+                <div class="value">Masculin</div>
+            </div>
+
+            <div class="info-row">
                 <div class="label">Date de naissance</div>
                 <div class="value">16/10/1991</div>
             </div>
 
-            <div class="field">
+            <div class="info-row">
                 <div class="label">Lieu de naissance</div>
                 <div class="value">RICHARD TOLL</div>
             </div>
-            
-            <div class="field">
+
+            <div class="info-row">
+                <div class="label">Pays de naissance</div>
+                <div class="value">Sénégal</div>
+            </div>
+
+            <div class="info-row">
                 <div class="label">Nationalité</div>
                 <div class="value">Sénégal</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Ligne 4 de l'adresse postale du domicile</div>
+                <div class="value">6 LA MOTTE DE MONT</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Code postal ou code CEDEX de l'adresse postale du domicile</div>
+                <div class="value">33230</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Commune de l'adresse postale du domicile</div>
+                <div class="value">COUTRAS</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Catégorie du titre</div>
+                <div class="value">CONJOINT DE FRANCAIS</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Code pays de l'adresse postale du domicile</div>
+                <div class="value">France</div>
+            </div>
+        </section>
+
+        <!-- SECTION 3 -->
+        <section>
+            <h2>Données d'en-têtes</h2>
+            
+            <div class="info-row">
+                <div class="label">Type de document</div>
+                <div class="value">Document étranger</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Identifiant de l'autorité de certification</div>
+                <div class="value">FR06</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Identifiant du certificat</div>
+                <div class="value">DGE0</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Date d'émission du cachet électronique</div>
+                <div class="value">10/04/2026</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Date de création de la signature électronique</div>
+                <div class="value">10/04/2026</div>
+            </div>
+
+            <div class="info-row">
+                <div class="label">Pays émetteur du document</div>
+                <div class="value">France</div>
             </div>
         </section>
     </main>
 
     <div class="fab">
-        <div class="qr-icon">
-            <div class="qr-box"></div>
-            <div class="qr-box"></div>
-            <div class="qr-box"></div>
-            <div class="qr-box"></div>
+        <div class="qr-icon-grid">
+            <div class="qr-dot"></div>
+            <div class="qr-dot"></div>
+            <div class="qr-dot"></div>
+            <div class="qr-dot"></div>
         </div>
     </div>
 
-    <footer class="footer">
-        <button class="btn-finish">Terminer</button>
+    <footer>
+        <button class="footer-btn">Terminer</button>
     </footer>
 
 </body>
