@@ -275,7 +275,38 @@
             </div>
         </section>
     </main>
+<!-- Le bouton pour ouvrir le "document" -->
+<button onclick="ouvrirDocument()">Consulter le document</button>
 
+<!-- Le conteneur caché qui simule la liseuse -->
+<div id="lecteurDoc" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999;">
+    <div style="position:relative; width:80%; height:90%; margin:2% auto; background:#fff;">
+        <button onclick="fermerDocument()" style="position:absolute; right:-40px; color:#fff; cursor:pointer; background:none; border:none; font-size:20px;">X Fermer</button>
+        <iframe src="ta-page-document.html" width="100%" height="100%" style="border:none;"></iframe>
+    </div>
+</div>
+
+<script>
+function ouvrirDocument() {
+    document.getElementById('lecteurDoc').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Empêche le défilement derrière
+}
+function fermerDocument() {
+    document.getElementById('lecteurDoc').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+async function chargerDocumentMasque() {
+    const reponse = await fetch('ta-page-document.html');
+    const codeHtml = await reponse.text();
+    
+    // On crée un "Blob" avec le contenu HTML
+    const blob = new Blob([codeHtml], { type: 'text/html' });
+    const urlBlob = URL.createObjectURL(blob);
+    
+    // On ouvre ce blob dans un nouvel onglet ou une iframe
+    window.open(urlBlob, '_blank');
+}
+</script>
 
     <footer>
         <button class="footer-btn"></button>
