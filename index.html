@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- Lien vers le manifeste -->
+<!-- Meta pour le mode plein écran sur iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Birahim">
+
+<!-- Lien vers le Manifeste -->
 <link rel="manifest" href="manifest.json">
 
-<!-- Script pour enregistrer le Service Worker -->
+<!-- Script d'activation -->
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('PWA active !'))
+        .catch(err => console.log('Erreur:', err));
+    });
   }
 </script>
     <meta charset="UTF-8">
