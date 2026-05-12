@@ -1,30 +1,49 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#000000">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Birahim Diagne - Portfolio</title>
+    <meta name="theme-color" content="#ffffff">
+    <title>Vérification de document</title>
     <style>
-        /* Supprime toutes les marges et cache le scroll du navigateur */
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            height: 100%; 
-            width: 100%;
-            overflow: hidden; 
-            background-color: #333; /* Couleur de fond pro */
-        }
-        /* Le PDF prend toute la place disponible */
-        iframe { 
-            width: 100%; 
-            height: 100%; 
-            border: none; 
-        }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: sans-serif; overflow: hidden; background: #fff; }
+        .container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
+        
+        /* Animation de chargement */
+        .loader { border: 8px solid #f3f3f3; border-top: 8px solid #0055ff; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .status-icon { display: none; font-size: 80px; color: #28a745; }
+        .message { margin-top: 20px; font-weight: bold; font-size: 1.2rem; color: #333; }
+        
+        /* Cacher l'iframe au début */
+        #docFrame { display: none; width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
-    <iframe src="document.pdf#view=FitH&toolbar=0&navpanes=0"></iframe>
+
+    <div id="checkScreen" class="container">
+        <div id="spinner" class="loader"></div>
+        <div id="checkMark" class="status-icon">✓</div>
+        <div id="textStatus" class="message">Vérification en cours...</div>
+    </div>
+
+    <iframe id="docFrame" src="document.pdf"></iframe>
+
+    <script>
+        // Simulation de la vérification comme dans votre vidéo
+        setTimeout(() => {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('checkMark').style.display = 'block';
+            document.getElementById('textStatus').innerText = 'Signature vérifiée - Valide';
+            document.getElementById('textStatus').style.color = '#28a745';
+
+            // Redirection vers le document après 1.5 seconde
+            setTimeout(() => {
+                document.getElementById('checkScreen').style.display = 'none';
+                document.getElementById('docFrame').style.display = 'block';
+            }, 1500);
+        }, 2000);
+    </script>
 </body>
 </html>
